@@ -27,25 +27,31 @@ def detail(request, question_id):
     context = {
         'question': question
     }
+
+
     return render(request, 'polls/detail.html', context)
 
 
 def results(request, question_id):
-    response = "youre looking at the results of question %s"
-    return HttpResponse(response % question_id)
+    question = get_object_or_404(Question,pk=question_id)
+    context = {
+        'question':question
+    }
+
+    return render(request,'polls:results',context)
 
 
 def vote(request, question_id):
-
     if request.method == 'POST':
         data = request.POST
         try:
             choice_id = data['choice']
             choice = Choice.objects.get(id=choice_id)
-            choice.votes+=1
+            choice.votes += 1
             choice.save()
+            return redirect('polls:results', question_id)
         except (KeyError, Choice.DoesNotExist):
-            message.add_messages(request, messages.ERROR,"you didn't select a choice")
-            return redirect('polls:detail',question_id)
+            messages.add_message(request, messages.ERROR, "you didn't select a choice")
+            return redirect('polls:detail', question_id)
     else:
         return HttpResponse("you're voting on question %s" % question_id)
