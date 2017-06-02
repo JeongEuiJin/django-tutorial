@@ -1,8 +1,22 @@
 <h1>{{question.question_text}}</h1>
 <!--question만 적엇을 경우 나오는것은 models.py에 __str__에 정의를 해두었기때문에 보여지게되는것 ,-->
+{% if message %}
+    {% for message in messages%}
+    <p><strong></strong></p>
+    {% endfor%}
+{% endif%}
+{% if error_message %}
+<p><strong>{{error_message}}</strong></p>
+{% endif %}
 
-<ul>
-{% for choice in question.choice_set.all %}
-    <li>{{choice.choice_text}}</li>
-{% endfor%}
-    </ul>
+<form action="{% url 'polls:vote' question.id%}" method="POST"></form>
+
+{% csrf_token %}
+{% for choice in question.choice_set.all%}
+<input type="radio"
+       name="'choice"
+       id="choice{{ forloop.counter}}"
+       value="{{choic.id}}">
+<label for="choice{{forloop.counter}}">{{choice.choice_text}}</label><br>
+{% endfor %}
+<button type="submit">Vote</button>

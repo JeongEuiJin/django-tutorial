@@ -16,7 +16,8 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from polls import urls as polls_urls #동적으로 polls를 이름변경을 할 때 하는
+from polls import urls as polls_urls
+#동적으로 polls를 이름변경을 할 때 하는
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
